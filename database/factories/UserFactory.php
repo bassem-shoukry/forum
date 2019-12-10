@@ -1,8 +1,12 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/** @var Factory $factory */
+
+use App\Reply;
 use App\User;
+use App\Thread;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /*
@@ -25,3 +29,21 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+
+$factory->define(Thread::class, function (Faker $faker) {
+    return [
+        'title' => $faker->title,
+        'body' => $faker->paragraph,
+        'user_id' => function(){ return factory(User::class)->create()->id;}
+    ];
+});
+
+$factory->define(Reply::class, function (Faker $faker) {
+    return [
+        'body' => $faker->paragraph,
+        'user_id' => function(){ return factory(User::class)->create()->id;},
+        'thread_id' => function(){ return factory(Thread::class)->create()->id;}
+    ];
+});
+
