@@ -32,11 +32,15 @@ $factory->define(User::class, function (Faker $faker) {
 
 
 $factory->define(Thread::class, function (Faker $faker) {
+
+
     return [
-        'title' => $faker->title,
+        'title' => $faker->sentence(6),
         'body' => $faker->paragraph,
         'user_id' => function(){ return factory(User::class)->create()->id;}
     ];
+
+
 });
 
 $factory->define(Reply::class, function (Faker $faker) {
