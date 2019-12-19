@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Reply;
+use App\Thread;
 use Illuminate\Http\Request;
 
 class ReplyController extends Controller
@@ -30,12 +31,14 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Thread $thread
+     * @param $reply
+     * @return void
      */
-    public function store(Request $request)
+    public function store(Thread $thread,$reply)
     {
-        //
+
+        $thread->addreply($reply);
     }
 
     /**
@@ -63,7 +66,7 @@ class ReplyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  \App\Reply  $reply
      * @return \Illuminate\Http\Response
      */

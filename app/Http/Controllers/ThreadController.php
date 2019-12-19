@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Thread;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class ThreadController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return Factory|View
      */
     public function index()
     {
@@ -43,8 +45,8 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Thread  $thread
-     * @return Response
+     * @param Thread $thread
+     * @return Factory|View
      */
     public function show(Thread $thread)
     {
@@ -54,7 +56,7 @@ class ThreadController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Thread  $thread
+     * @param Thread $thread
      * @return Response
      */
     public function edit(Thread $thread)
@@ -66,7 +68,7 @@ class ThreadController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
+     * @param Thread $thread
      * @return Response
      */
     public function update(Request $request, Thread $thread)
@@ -77,7 +79,7 @@ class ThreadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Thread  $thread
+     * @param Thread $thread
      * @return Response
      */
     public function destroy(Thread $thread)
