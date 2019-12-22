@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  */
 class Thread extends Model
 {
-
+    protected $guarded =[];
     public function path()
     {
         return route('threads.show',$this->id);

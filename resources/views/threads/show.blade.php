@@ -21,6 +21,24 @@
                         @endforeach
                     </div>
                 </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if(Auth::check())
+                            <form method="POST" action="{{route('replies.store',$thread)}}">
+                                @csrf
+                                <div class="form-group">
+                                    <textarea name="body" title="body" class="form-control" placeholder="Have something to say?"></textarea>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-info">Post</button>
+                                </div>
+                            </form>
+                        @else
+                            <p>Please <a href="{{url('/login')}}">Sign in</a> to participate in the discussion.</p>
+                        @endif
+                    </div>
+                </div>
 
             </div>
         </div>

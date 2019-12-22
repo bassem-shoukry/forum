@@ -28,7 +28,7 @@ class ThreadsTest extends TestCase
         $this->get(route('threads.index'))
             ->assertSee($this->thread->title);
 
-        $this->get(route('threads.show',$this->thread->id))
+        $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
 
@@ -37,8 +37,8 @@ class ThreadsTest extends TestCase
      */
     public function a_user_can_read_single_thread()
     {
-        $this->get(route('threads.show',$this->thread->id))
-            ->assertSee($this->thread->b);
+        $this->get($this->thread->path())
+            ->assertSee($this->thread->body);
     }
 
 
@@ -48,11 +48,7 @@ class ThreadsTest extends TestCase
     public function a_user_can_read_reply_that_are_associated_with_a_thead()
     {
         $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
-        $this->get(route('threads.show',$this->thread->id))
+        $this->get($this->thread->path())
             ->assertSee($reply->body);
-
     }
-
-
-
 }

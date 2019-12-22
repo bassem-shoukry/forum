@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Thread;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class ThreadController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only('store');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,12 +40,18 @@ class ThreadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+       $thread = Thread::create([
+            'user_id' => auth()->id(),
+            'title' => $request->title,
+            'body' => $request->body
+        ]);
+
+        return redirect()->to($thread->path());
     }
 
     /**
@@ -67,7 +79,7 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param Thread $thread
      * @return Response
      */
