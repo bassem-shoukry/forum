@@ -2,25 +2,27 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
-use App\Thread;
-use App\User;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\Reply;
+use App\Models\Thread;
 use Tests\TestCase;
-
 class ParticipateInForumTest extends TestCase
 {
-    use DatabaseMigrations;
+    protected $thread;
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    /*
+        $this->thread =  create(Thread::class);
+
+    }
+
+    /**
      * @test
      */
     public function unauthenticated_user_may_can_not_add_replies()
     {
-        $this->expectException(AuthenticationException::class);
-
-        $this->post('threads/1/replies',[]);
+        $this->withExceptionHandling()->post(route('replies.store',$this->thread),[])
+            ->assertRedirect('/login');
     }
 
    /**
@@ -28,17 +30,23 @@ class ParticipateInForumTest extends TestCase
     */
    public function an_authenticated_user_may_participate_in_forum_threads()
    {
-       $user = factory(User::class)->create();
+       $this->signIn();
 
-       $this->be($user);
+       $reply = make(Reply::class);
 
-       $thread = factory(Thread::class)->create();
-
-       $reply = factory(Reply::class)->make();
-
-       $this->post($thread->path().'/replies',$reply->toArray());
-
-       $this->get($thread->path())
+       $this->post(route('replies.store',[$this->thread]),$reply->toArray());
+       $this->get($this->thread->path())
            ->assertSee($reply->body);
+   }
+
+   /**
+    * @test
+    */
+   public function a_reply_requires_a_body()
+   {
+       $this->signIn();
+       $reply = make(Reply::class,['body' => null]);
+       $this->post(route('replies.store',[$this->thread]),$reply->toArray())
+           ->assertSessionHasErrors('body');
    }
 }

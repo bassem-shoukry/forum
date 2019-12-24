@@ -38,13 +38,15 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories"
+            "database/factories",
+            "app/Models"
         ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": ["tests/Utilities/function.php"]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

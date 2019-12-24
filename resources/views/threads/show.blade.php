@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         @if(Auth::check())
-                            <form method="POST" action="{{route('replies.store',$thread)}}">
+                            <form method="POST" action="{{route('replies.store',[$thread->channel,$thread])}}">
                                 @csrf
                                 <div class="form-group">
                                     <textarea name="body" title="body" class="form-control" placeholder="Have something to say?"></textarea>

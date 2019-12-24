@@ -2,13 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Thread;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\Reply;
+use App\Models\Thread;
 use Tests\TestCase;
 
-class ThreadsTest extends TestCase
+class ReadThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
 
     private $thread;
 
@@ -16,7 +15,7 @@ class ThreadsTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
 
     /**
@@ -45,10 +44,12 @@ class ThreadsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_read_reply_that_are_associated_with_a_thead()
+    public function a_user_can_read_replies_that_are_associated_with_a_thead()
     {
-        $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
+        $reply = create(Reply::class,['thread_id' => $this->thread->id]);
         $this->get($this->thread->path())
             ->assertSee($reply->body);
     }
+
+
 }

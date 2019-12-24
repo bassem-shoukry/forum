@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Channel;
 use App\Reply;
-use App\Thread;
+use App\Models\Thread;
 use Auth;
+use http\Env\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -40,16 +42,19 @@ class ReplyController extends Controller
      *
      * @param Thread $thread
      * @param Request $request
-     * @return RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Thread $thread,Request $request)
     {
-        $thread->addReply([
+        $this->validate($request,[
+            'body' => 'required'
+        ]);
+         $thread->addReply([
             'body' => $request->body,
             'user_id' => Auth::id()
         ]);
 
-        return back();
+
     }
 
     /**

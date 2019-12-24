@@ -2,13 +2,13 @@
 
 /** @var Factory $factory */
 
-use App\Reply;
-use App\User;
-use App\Thread;
+use App\Models\Reply;
+use App\Models\User;
+use App\Models\Thread;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
-
+use App\Models\Channel;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -37,6 +37,9 @@ $factory->define(Thread::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(6),
         'body' => $faker->paragraph,
+        'channel_id' => function(){
+            return factory(Channel::class)->create()->id;
+        },
         'user_id' => function(){ return factory(User::class)->create()->id;}
     ];
 
@@ -48,6 +51,14 @@ $factory->define(Reply::class, function (Faker $faker) {
         'body' => $faker->paragraph,
         'user_id' => function(){ return factory(User::class)->create()->id;},
         'thread_id' => function(){ return factory(Thread::class)->create()->id;}
+    ];
+});
+
+$factory->define(Channel::class, function (Faker $faker) {
+    $name = $faker->name;
+    return [
+        'name' => $name,
+       'slug' => STR::slug($name)
     ];
 });
 

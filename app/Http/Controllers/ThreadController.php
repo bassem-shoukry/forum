@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
+use App\Channel;
+use App\Models\Thread;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class ThreadController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('store');
+        $this->middleware('auth')->only(['create','store']);
     }
 
     /**
@@ -30,11 +31,11 @@ class ThreadController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Factory|View
      */
     public function create()
     {
-        //
+        return view('threads.create');
     }
 
     /**
@@ -42,25 +43,34 @@ class ThreadController extends Controller
      *
      * @param Request $request
      * @return RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-       $thread = Thread::create([
-            'user_id' => auth()->id(),
-            'title' => $request->title,
-            'body' => $request->body
+        $this->validate($request,[
+           'title' => 'required',
+            'body' => 'required',
+            'channel_id' => 'required|exists:channels,id'
         ]);
 
-        return redirect()->to($thread->path());
+       $thread =  Thread::create([
+            'user_id' => auth()->id(),
+            'title' => $request->title,
+            'body' => $request->body,
+            'channel_id' => $request->channel_id
+        ]);
+
+        return redirect()->route('threads.show',[$thread->channel,$thread]);
     }
 
     /**
      * Display the specified resource.
      *
+     * @param Channel $channel
      * @param Thread $thread
      * @return Factory|View
      */
-    public function show(Thread $thread)
+    public function show($channel,Thread $thread)
     {
         return view('threads.show',compact('thread'));
     }
