@@ -27,3 +27,5 @@ Route::get('threads/{channel}/{thread}','ThreadController@show')->name('threads.
 
 Route::post('threads/{thread}/replies','ReplyController@store')->name('replies.store');
 
+Route::resource('channels','ChannelController');
+
