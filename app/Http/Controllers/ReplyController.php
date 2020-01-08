@@ -6,7 +6,6 @@ use App\Channel;
 use App\Reply;
 use App\Models\Thread;
 use Auth;
-use http\Env\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -42,6 +41,7 @@ class ReplyController extends Controller
      *
      * @param Thread $thread
      * @param Request $request
+     * @return RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Thread $thread,Request $request)
@@ -54,7 +54,7 @@ class ReplyController extends Controller
             'user_id' => Auth::id()
         ]);
 
-
+        return back();
     }
 
     /**

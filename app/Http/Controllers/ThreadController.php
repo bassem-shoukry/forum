@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\Filters\ThreadFilters;
 use App\Models\Thread;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -20,11 +21,13 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param ThreadFilters $filters
      * @return Factory|View
      */
-    public function index()
+    public function index(ThreadFilters $filters)
     {
-        $threads = Thread::all();
+        $threads = Thread::latest()->filter($filters)->get();
+
         return view('threads.index',compact('threads'));
     }
 
@@ -72,7 +75,10 @@ class ThreadController extends Controller
      */
     public function show($channel,Thread $thread)
     {
-        return view('threads.show',compact('thread'));
+        return view('threads.show',[
+            'thread' => $thread,
+            'replies' => $thread->replies()->paginate(20)
+        ]);
     }
 
     /**

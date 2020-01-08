@@ -6,7 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-
+use App\Filters\ThreadFilters;
 /**
  * App\Thread
  *
@@ -26,10 +26,33 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Thread whereUpdatedAt($value)
  * @method static Builder|Thread whereUserId($value)
  * @mixin Eloquent
+ * @property int $channel_id
+ * @property-read Channel $channel
+ * @property-read User $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|Reply[] $replies
+ * @property-read int|null $replies_count
+ * @method static Builder|Thread filter($filters)
+ * @method static Builder|Thread whereChannelId($value)
  */
 class Thread extends Model
 {
     protected $guarded =[];
+
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function (Builder $builder) {
+            $builder->withCount('replies');
+        });
+    }
+
     public function path()
     {
         return "/threads/{$this->channel->slug}/{$this->id}";
@@ -54,5 +77,15 @@ class Thread extends Model
     public function channel()
     {
         return $this->belongsTo(Channel::class);
+    }
+
+    /**
+     * @param $query
+     * @param ThreadFilters $filters
+     * @return mixed
+     */
+    public function scopeFilter($query,$filters)
+    {
+        return $filters->apply($query);
     }
 }

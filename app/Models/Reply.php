@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Reply whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Reply whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\User $owner
  */
 class Reply extends Model
 {

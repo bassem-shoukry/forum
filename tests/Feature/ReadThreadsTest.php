@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
@@ -63,8 +64,22 @@ class ReadThreadsTest extends TestCase
 
         $threadNotInChannel = create(Thread::class);
 
-        $this->get(route('channels.show',$channel))
+        $this->get('channels/'.$channel->slug)
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_filter_threads_by_any_username()
+    {
+        $this->signIn(create(User::class,['name' => 'BassemShoukry']));
+        $threadByBassemShoukry = create(Thread::class,['user_id' => auth()->id()]);
+        $threadNotBYBassemShoukry = create(Thread::class);
+
+        $this->get('threads?by=BassemShoukry')
+            ->assertSee($threadByBassemShoukry->title)
+            ->assertDontSee($threadNotBYBassemShoukry->title);
     }
 }
