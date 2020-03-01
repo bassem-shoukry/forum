@@ -13,3 +13,4 @@ class ChannelController extends Controller
         return view('channels.show',compact('threads'));
     }
 }
+

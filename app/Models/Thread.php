@@ -38,6 +38,8 @@ class Thread extends Model
 {
     protected $guarded =[];
 
+    protected $with = ['channel','creator'];
+
 
     /**
      * The "booting" method of the model.
