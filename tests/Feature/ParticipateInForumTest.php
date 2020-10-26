@@ -19,7 +19,7 @@ class ParticipateInForumTest extends TestCase
     /**
      * @test
      */
-    public function unauthenticated_user_may_can_not_add_replies()
+     function unauthenticated_user_may_can_not_add_replies()
     {
         $this->withExceptionHandling()->post(route('replies.store',$this->thread),[])
             ->assertRedirect('/login');
@@ -28,7 +28,7 @@ class ParticipateInForumTest extends TestCase
    /**
     * @test
     */
-   public function an_authenticated_user_may_participate_in_forum_threads()
+   function an_authenticated_user_may_participate_in_forum_threads()
    {
        $this->signIn();
 
@@ -42,7 +42,7 @@ class ParticipateInForumTest extends TestCase
    /**
     * @test
     */
-   public function a_reply_requires_a_body()
+   function a_reply_requires_a_body()
    {
        $this->signIn();
        $reply = make(Reply::class,['body' => null]);

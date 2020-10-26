@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">
         <h5>
-            {{$reply->owner->name}} said {{$reply->created_at->diffForHumans()}}
+            <a href="{{route('profiles.show',$reply->owner->name)}}">{{$reply->owner->name}}</a> said {{$reply->created_at->diffForHumans()}}
         </h5>
         <form action="{{url("replies/{$reply->id}/favorites")}}" method="post">
             {{csrf_field()}}

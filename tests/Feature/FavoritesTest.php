@@ -11,7 +11,7 @@ class FavoritesTest extends TestCase
     /**
      * @test
      */
-    public function guests_can_not_favorite_any_reply()
+     function guests_can_not_favorite_any_reply()
     {
         $reply = create(Reply::class);
 
@@ -22,7 +22,7 @@ class FavoritesTest extends TestCase
     /**
      * @test
      */
-    public function an_authenticated_user_can_favorite_any_reply()
+    function an_authenticated_user_can_favorite_any_reply()
     {
         $this->signIn();
 

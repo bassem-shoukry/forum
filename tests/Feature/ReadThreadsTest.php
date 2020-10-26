@@ -13,7 +13,7 @@ class ReadThreadsTest extends TestCase
 
     private $thread;
 
-    public function setUp(): void
+    function setUp(): void
     {
         parent::setUp();
 
@@ -23,7 +23,7 @@ class ReadThreadsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_view_all_threads()
+    function a_user_can_view_all_threads()
     {
 
         $this->get(route('threads.index'))
@@ -36,7 +36,7 @@ class ReadThreadsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_read_single_thread()
+    function a_user_can_read_single_thread()
     {
         $this->get($this->thread->path())
             ->assertSee($this->thread->body);
@@ -46,7 +46,7 @@ class ReadThreadsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_read_replies_that_are_associated_with_a_thead()
+    function a_user_can_read_replies_that_are_associated_with_a_thead()
     {
         $reply = create(Reply::class,['thread_id' => $this->thread->id]);
         $this->get($this->thread->path())
@@ -56,7 +56,7 @@ class ReadThreadsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_filter_threads_according_to_a_channel()
+    function a_user_can_filter_threads_according_to_a_channel()
     {
         $channel = create(Channel::class);
 
@@ -72,7 +72,7 @@ class ReadThreadsTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_filter_threads_by_any_username()
+    function a_user_can_filter_threads_by_any_username()
     {
         $this->signIn(create(User::class,['name' => 'BassemShoukry']));
         $threadByBassemShoukry = create(Thread::class,['user_id' => auth()->id()]);

@@ -21,7 +21,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::resource('threads','ThreadController')->except('show');
+Route::resource('threads','ThreadController')->except('show','destroy');
+
+Route::delete('threads/{channel}/{thread}','ThreadController@destroy')->name('threads.destroy');
 
 Route::get('threads/{channel}/{thread}','ThreadController@show')->name('threads.show');
 
@@ -30,3 +32,5 @@ Route::post('threads/{thread}/replies','ReplyController@store')->name('replies.s
 Route::resource('channels','ChannelController');
 
 Route::post('replies/{reply}/favorites','FavoriteController@store');
+
+Route::resource('profiles','ProfileController');
